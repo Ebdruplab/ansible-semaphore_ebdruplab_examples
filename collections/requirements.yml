@@ -1,0 +1,10 @@
+collections: {}
+## Example collection requirements from Ansible Galaxy
+#- name: ansible.builtin
+#  version: "1.0.0"
+#  source: https://galaxy.ansible.com
+
+## Example collection requirements from GitHub
+#- name: example_collection_github
+#  src: https://github.com/user/ansible-collection-example
+#  version: main

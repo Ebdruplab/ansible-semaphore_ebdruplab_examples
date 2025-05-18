@@ -1,0 +1,10 @@
+roles: {}
+## Example role requirements from Ansible Galaxy
+# - name: example_role
+#   src: ansible-role-example
+#   version: v1.0
+
+## Example role requirements from GitHub
+# - name: example_role_github'
+#   src: https://github.com/user/ansible-role-example
+#   version: master

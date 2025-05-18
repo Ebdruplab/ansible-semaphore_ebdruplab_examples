@@ -1,0 +1,2 @@
+---
+- import_playbook: playbooks/pb_example.yml

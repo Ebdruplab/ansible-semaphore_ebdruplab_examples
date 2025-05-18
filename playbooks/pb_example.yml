@@ -1,0 +1,51 @@
+# Description: This is an example site file playbook.
+
+# How to run:
+# ansible-playbook site.yml -i inventory.ini --limit="hostname.example.com" --user= --ask-become-pass --ask-pass --check --diff
+---
+
+- name: Example Playbook
+  hosts: "{{ pb_var_target_hosts | default('semaphore_server') }}"
+  gather_facts: "{{ pb_var_gather_facts | default(true)}}"
+  become: "{{ pb_var_become | default (false)}}"
+  become_user: "{{ pb_var_become_user | default('semaphore') }}"
+  vars_files:
+    - "../vars/{{ target_env }}/vars.yml"
+    - "../vars/{{ target_env }}/vault.yml"
+  tasks:
+    - name: "Extract all groups and hosts"
+      ansible.builtin.set_fact:
+        inventory_groups: "{{ groups | dict2items }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - set_facts
+        - inventory_groups
+
+    - name: "Display all inventory groups with hosts"
+      ansible.builtin.debug:
+        msg: "{{ item.key }}: {{ item.value }}"
+      loop: "{{ inventory_groups }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - debug
+        - inventory_groups
+
+    - name: "Extract targeted hosts"
+      ansible.builtin.set_fact:
+        targeted_hosts: "{{ ansible_play_hosts }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - set_facts
+
+    - name: "Display targeted hosts"
+      ansible.builtin.debug:
+        msg: "Targeted Hosts: {{ targeted_hosts }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - inventory_hosts
+        - debug
+

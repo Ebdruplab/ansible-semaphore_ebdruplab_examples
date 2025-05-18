@@ -1,0 +1,55 @@
+# Description: This is an example site file playbook.
+
+# How to run:
+# ansible-playbook pb-semaphore-example.yml -i inventories/example/example.ini --limit="localhgost" --user="localtestuser" -k -K --check --diff
+---
+
+- name: 'Example pb-semaphore-example.yml'
+  hosts: "{{ pb_var_target_hosts | default('all') }}"
+  gather_facts: "{{ pb_var_gather_facts | default(true)}}"
+  tasks:
+
+    - name: "Extract all groups and hosts"
+      ansible.builtin.set_fact:
+        __inventory_groups: "{{ groups | dict2items }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - set_facts
+        - inventory_groups
+
+    - name: "Display all inventory groups with hosts"
+      ansible.builtin.debug:
+        msg: "{{ item.key }}: {{ item.value }}"
+      loop: "{{ __inventory_groups }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - debug
+        - inventory_groups
+
+    - name: "Extract targeted hosts"
+      ansible.builtin.set_fact:
+        __targeted_hosts: "{{ ansible_play_hosts }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - set_facts
+
+    - name: "Display targeted hosts"
+      ansible.builtin.debug:
+        msg: "Targeted Hosts: {{ __targeted_hosts }}"
+      tags:
+        - inventory_showcase
+        - inventory
+        - inventory_hosts
+        - debug
+
+    - name: "Show group var"
+      ansible.builtin.debug:
+        var: example_group_var1
+
+    - name: "Show host var"
+      ansible.builtin.debug:
+        var: example_test_host_var1
+
